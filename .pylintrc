@@ -1,0 +1,16 @@
+[MESSAGES CONTROL]
+
+# Enable the message, report, category or checker with the given id(s). You can
+# either give multiple identifier separated by comma (,) or put this option
+# multiple time.
+#enable=
+
+# Disable the message, report, category or checker with the given id(s). You
+# can either give multiple identifier separated by comma (,) or put this option
+# multiple time (only on the command line, not in the configuration file where
+# it should appear only once).
+# C0111 asks for docstrings
+# C0103 asks for PascalCase naming, but flags type-variables like T
+# R0903 too few public methods
+# W1203: Use % formatting in logging functions and pass the % parameters as arguments (logging-fstring-interpolation)
+disable=C0111,C0103,R0903, W1203

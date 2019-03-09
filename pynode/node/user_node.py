@@ -1,11 +1,11 @@
 from dataclasses import dataclass
-from typing import Any, Dict, NamedTuple, Generic, TypeVar
+from typing import Any, Dict
 from pynode.node.nodetype import NodeType
 
-from pynode.node.core import Node, NodeDataTuple, NodeMutator, NodeRow
+from pynode.node import core
 
-@dataclass
-class UserNodeData(NodeDataTuple):
+@dataclass(frozen=True)
+class UserNodeData(core.NodeDataTuple):
     name: str
     twitter_handle: str
     id: int
@@ -13,7 +13,7 @@ class UserNodeData(NodeDataTuple):
     type: NodeType
     updated: int
 
-class UserNode(Node[UserNodeData]):
+class UserNode(core.Node[UserNodeData]):
 
     def get_name(self) -> str:
         return self._data.name
@@ -21,16 +21,18 @@ class UserNode(Node[UserNodeData]):
     def get_twitter_handle(self) -> str:
         return self._data.twitter_handle
 
-class UserNodeMutator(NodeMutator[UserNode]):
+class UserNodeMutator(core.NodeMutator):
 
     def __init__(self) -> None:
+        self._name: str = ''
+        self._twitter_handle: str = ''
         super().__init__(NodeType.USER)
 
-    def set_name(self, name: str) -> UserNodeMutator:
+    def set_name(self, name: str) -> 'UserNodeMutator':
         self._name = name
         return self
 
-    def set_twitter_handle(self, twitter_handle: str) -> UserNodeMutator:
+    def set_twitter_handle(self, twitter_handle: str) -> 'UserNodeMutator':
         self._twitter_handle = twitter_handle
         return self
 
