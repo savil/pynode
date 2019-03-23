@@ -3,6 +3,7 @@ from dataclasses import dataclass
 import json
 from typing import Any, Dict, Generic, Type, TypeVar
 
+from pynode.store import mysqlstore
 from pynode.node import nodetype
 from pynode.store import store
 
@@ -37,7 +38,7 @@ class NodeMutator(ABC):
     async def create(self) -> int:
         data_dict = self.get_data_dict() # should this become a mutation object?
         node_type = self.get_node_type()
-        store_instance = await store.Store.gen()
+        store_instance = await mysqlstore.MysqlStore.gen()
         return await store_instance.create_node(node_type, data_dict)
 
     @abstractmethod

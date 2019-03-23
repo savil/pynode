@@ -1,10 +1,10 @@
 from typing import Tuple, Type
 
 from pynode.util.exceptions import ProgrammerError
+from pynode.store import mysqlstore
 from pynode.node import core
 from pynode.node import user_node
 from pynode.node.nodetype import NodeType
-from pynode.store import store
 
 def node_type_to_class(node_type: NodeType) -> Tuple[Type[core.Node], Type[core.NodeDataTuple]]:
 
@@ -17,7 +17,7 @@ def node_type_to_class(node_type: NodeType) -> Tuple[Type[core.Node], Type[core.
 class NodeLoader:
     @staticmethod
     async def load(node_id: int) -> core.Node:
-        store_instance = await store.Store.gen()
+        store_instance = await mysqlstore.MysqlStore.gen()
         node_row = await store_instance.fetch_node_by_id(node_id)
         if node_row is None:
             raise SystemError(f"unable to find newly created node, from id: {node_id}")
