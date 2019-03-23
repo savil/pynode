@@ -4,7 +4,7 @@ import json
 from typing import Any, Dict, Generic, Type, TypeVar
 
 from pynode.node import nodetype
-from pynode.nodestore import store
+from pynode.store import store
 
 @dataclass(frozen=True)
 class NodeDataTuple:

@@ -4,7 +4,7 @@ from pynode.util.exceptions import ProgrammerError
 from pynode.node import core
 from pynode.node import user_node
 from pynode.node.nodetype import NodeType
-from pynode.nodestore import store
+from pynode.store import store
 
 def node_type_to_class(node_type: NodeType) -> Tuple[Type[core.Node], Type[core.NodeDataTuple]]:
 
