@@ -3,9 +3,9 @@ from dataclasses import dataclass
 import json
 from typing import Any, Dict, Generic, Type, TypeVar
 
-from pynode.store import mysqlstore
 from pynode.node import nodetype
-from pynode.store import store
+from pynode.store.store import NodeRow
+from pynode.store import factory as store_factory
 
 @dataclass(frozen=True)
 class NodeDataTuple:
@@ -15,7 +15,7 @@ class NodeDataTuple:
     updated: int
 
 
-def node_row_as_flattened_dict(row: store.NodeRow) -> Dict[str, Any]:
+def node_row_as_flattened_dict(row: NodeRow) -> Dict[str, Any]:
     data_dict = json.loads(row.data)
     row_dict = row._asdict()
     del row_dict['data']
@@ -25,7 +25,7 @@ def node_row_as_flattened_dict(row: store.NodeRow) -> Dict[str, Any]:
 
 T = TypeVar('T', bound=NodeDataTuple)
 class Node(Generic[T]):
-    def __init__(self, data_constructor: Type[T], row: store.NodeRow) -> None:
+    def __init__(self, data_constructor: Type[T], row: NodeRow) -> None:
         flattened_row = node_row_as_flattened_dict(row)
         self._data: T = data_constructor(**flattened_row)
 
@@ -38,7 +38,8 @@ class NodeMutator(ABC):
     async def create(self) -> int:
         data_dict = self.get_data_dict() # should this become a mutation object?
         node_type = self.get_node_type()
-        store_instance = await mysqlstore.MysqlStore.gen()
+        #store_instance = await store_factory.inmemory()
+        store_instance = await store_factory.mysql()
         return await store_instance.create_node(node_type, data_dict)
 
     @abstractmethod

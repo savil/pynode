@@ -6,14 +6,11 @@ import aiomysql
 
 from pynode.node import nodetype
 from pynode.util.exceptions import SystemBadError
-from pynode.store.store import NodeRow, node_row_from_dict
+from pynode.store.store import NodeRow, node_row_from_dict, Store
 
-class MysqlStore:
+class MysqlStore(Store):
     _singleton: ClassVar[Optional['MysqlStore']] = None
     _fetch_limit = 1000
-
-    def __init__(self):
-        pass
 
     @staticmethod
     async def gen() -> 'MysqlStore':
