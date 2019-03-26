@@ -1,3 +1,4 @@
+import json
 import pytest
 from pynode.store import factory as store_factory
 from pynode.store.inmemorystore import InMemoryStore
@@ -24,4 +25,11 @@ class TestInMemoryStore():
 
     @pytest.mark.asyncio
     async def test_fetch_node_by_id(self):
-        pass
+        store_instance = await self._create_store()
+        data = {"name": "savil"}
+        node_id = await store_instance.create_node(NodeType.USER, data)
+        assert node_id == 1
+        node_row = await store_instance.fetch_node_by_id(node_id)
+        assert node_row is not None
+        assert node_row.id == 1
+        assert node_row.data == json.dumps(data)
